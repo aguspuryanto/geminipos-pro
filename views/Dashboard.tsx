@@ -1,13 +1,13 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  AreaChart, Area, PieChart, Pie, Cell, LineChart, Line, Legend
+  AreaChart, Area, PieChart, Pie, Cell, Legend
 } from 'recharts';
 import { 
   TrendingUp, ShoppingBag, Users, AlertCircle, Sparkles, 
   ArrowUpRight, ArrowDownRight, Package, Target, Calendar,
-  Trophy, AlertTriangle
+  Trophy, AlertTriangle, CheckCircle2
 } from 'lucide-react';
 import { getBusinessInsights } from '../services/geminiService';
 import { INITIAL_PRODUCTS, INITIAL_MEMBERS } from '../constants';
@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
     { label: 'Penjualan Hari Ini', value: 'Rp 4.520.000', change: '+12.5%', isUp: true, icon: <ShoppingBag className="text-blue-600" />, bg: 'bg-blue-50' },
     { label: 'Member Baru', value: '24', change: '+5.2%', isUp: true, icon: <Users className="text-indigo-600" />, bg: 'bg-indigo-50' },
     { label: 'Laba Bersih (Bulan)', value: 'Rp 12.250.000', change: '-2.1%', isUp: false, icon: <TrendingUp className="text-emerald-600" />, bg: 'bg-emerald-50' },
-    { label: 'Stok Kritis', value: '7 Item', change: 'Segera Cek', isUp: false, icon: <AlertCircle className="text-amber-600" />, bg: 'bg-amber-50' },
+    { label: 'Stok Kritis', value: '7 Item', change: 'Cek Segera', isUp: false, icon: <AlertCircle className="text-amber-600" />, bg: 'bg-amber-50' },
   ];
 
   const memberSegments = [
@@ -81,53 +81,53 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 md:space-y-8">
       {/* Primary Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
+          <div key={i} className="bg-white p-5 md:p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl transition-all group active:scale-[0.98]">
             <div className="flex items-center justify-between mb-4">
-              <div className={`${stat.bg} p-3 rounded-xl group-hover:scale-110 transition-transform`}>{stat.icon}</div>
-              <div className={`flex items-center text-xs font-bold px-2 py-1 rounded-full ${stat.isUp ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50'}`}>
-                {stat.isUp ? <ArrowUpRight size={14} className="mr-1" /> : <ArrowDownRight size={14} className="mr-1" />}
+              <div className={`${stat.bg} p-3 rounded-2xl group-hover:scale-110 transition-transform shadow-inner`}>{stat.icon}</div>
+              <div className={`flex items-center text-[10px] md:text-xs font-black px-2 py-1 rounded-full ${stat.isUp ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50'}`}>
+                {stat.isUp ? <ArrowUpRight size={14} className="mr-0.5" /> : <ArrowDownRight size={14} className="mr-0.5" />}
                 {stat.change}
               </div>
             </div>
-            <h3 className="text-slate-500 text-sm font-medium mb-1">{stat.label}</h3>
-            <p className="text-2xl font-black text-slate-900">{stat.value}</p>
+            <h3 className="text-slate-400 text-xs font-black uppercase tracking-widest mb-1">{stat.label}</h3>
+            <p className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">{stat.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Advanced Sales Trends Chart */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+        {/* Sales Trends Chart */}
+        <div className="lg:col-span-2 bg-white p-5 md:p-8 rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-6">
             <div>
-              <h3 className="font-black text-xl text-slate-800">Analisis Tren Penjualan</h3>
-              <p className="text-slate-400 text-sm">Visualisasi performa pendapatan berdasarkan waktu</p>
+              <h3 className="font-black text-xl md:text-2xl text-slate-800 tracking-tight">Tren Penjualan</h3>
+              <p className="text-slate-400 text-sm font-medium">Visualisasi performa pendapatan harian</p>
             </div>
-            <div className="flex bg-slate-100 p-1 rounded-xl">
+            <div className="flex bg-slate-100 p-1.5 rounded-2xl self-start sm:self-auto">
               {(['DAILY', 'WEEKLY', 'MONTHLY'] as const).map((p) => (
                 <button
                   key={p}
                   onClick={() => setPeriod(p)}
-                  className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
-                    period === p ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                  className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded-xl transition-all ${
+                    period === p ? 'bg-white text-indigo-600 shadow-lg shadow-indigo-100' : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
-                  {p === 'DAILY' ? 'Harian' : p === 'WEEKLY' ? 'Mingguan' : 'Bulanan'}
+                  {p === 'DAILY' ? 'Hari' : p === 'WEEKLY' ? 'Minggu' : 'Bulan'}
                 </button>
               ))}
             </div>
           </div>
           
-          <div className="h-[350px] w-full">
+          <div className="h-[250px] md:h-[350px] w-full -ml-4 md:ml-0">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={SALES_TRENDS[period]}>
                 <defs>
                   <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.15}/>
+                    <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.2}/>
                     <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
@@ -136,19 +136,19 @@ const Dashboard: React.FC = () => {
                   dataKey="name" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fill: '#94a3b8', fontSize: 12}} 
+                  tick={{fill: '#94a3b8', fontSize: 10, fontWeight: 700}} 
                   dy={10} 
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fill: '#94a3b8', fontSize: 12}}
-                  tickFormatter={(value) => `Rp ${(value / 1000).toLocaleString()}k`}
+                  tick={{fill: '#94a3b8', fontSize: 10, fontWeight: 700}}
+                  tickFormatter={(value) => `Rp ${(value / 1000)}k`}
                 />
                 <Tooltip 
                   cursor={{stroke: '#4f46e5', strokeWidth: 2}}
-                  contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
-                  formatter={(value: number) => [`Rp ${value.toLocaleString()}`, 'Penjualan']}
+                  contentStyle={{borderRadius: '20px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)', padding: '15px'}}
+                  formatter={(value: number) => [`Rp ${value.toLocaleString()}`, 'Total']}
                 />
                 <Area 
                   type="monotone" 
@@ -157,82 +157,79 @@ const Dashboard: React.FC = () => {
                   strokeWidth={4} 
                   fillOpacity={1} 
                   fill="url(#colorSales)" 
-                  animationDuration={1500}
+                  animationDuration={2000}
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Gemini AI Summary */}
-        <div className="flex flex-col gap-6">
-          <div className="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden flex-1">
-            <div className="absolute top-0 right-0 p-8 opacity-10 rotate-12">
-              <Sparkles size={160} />
+        {/* Gemini AI Summary (Compact on Mobile) */}
+        <div className="bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-800 rounded-[2.5rem] p-6 md:p-8 text-white shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-10 rotate-12 scale-150">
+            <Sparkles size={160} />
+          </div>
+          <div className="relative z-10 flex flex-col h-full">
+            <div className="flex items-center gap-3 mb-6 md:mb-8">
+              <div className="bg-white/20 p-2.5 rounded-2xl backdrop-blur-xl ring-1 ring-white/20">
+                <Target size={24} className="text-yellow-300 shadow-sm" />
+              </div>
+              <h3 className="font-black text-xl md:text-2xl tracking-tight">AI Insights</h3>
             </div>
-            <div className="relative z-10 h-full flex flex-col">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-white/20 p-2 rounded-xl backdrop-blur-md">
-                  <Target size={24} className="text-yellow-300" />
+            
+            <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 mb-8 flex-1 border border-white/10 flex flex-col justify-center">
+              {isLoadingInsight ? (
+                <div className="flex flex-col items-center justify-center space-y-4 py-10">
+                  <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin shadow-lg"></div>
+                  <p className="text-xs font-black uppercase tracking-widest opacity-60">Menganalisa Data...</p>
                 </div>
-                <h3 className="font-black text-xl">Gemini Business AI</h3>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 mb-6 flex-1 border border-white/10">
-                {isLoadingInsight ? (
-                  <div className="flex flex-col items-center justify-center h-full space-y-3 opacity-60">
-                    <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    <p className="text-sm font-medium">Memproses data...</p>
-                  </div>
-                ) : (
-                  <p className="text-indigo-50 leading-relaxed italic text-sm md:text-base">
-                    "{aiInsight}"
-                  </p>
-                )}
-              </div>
-              
-              <button 
-                onClick={fetchInsight}
-                disabled={isLoadingInsight}
-                className="w-full bg-white text-indigo-700 font-black py-4 rounded-2xl hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
-              >
-                <Sparkles size={18} />
-                Generate Strategi Baru
-              </button>
+              ) : (
+                <p className="text-indigo-50 leading-relaxed italic text-sm md:text-lg font-medium">
+                  "{aiInsight}"
+                </p>
+              )}
             </div>
+            
+            <button 
+              onClick={fetchInsight}
+              disabled={isLoadingInsight}
+              className="w-full bg-white text-indigo-700 font-black py-4.5 rounded-2xl hover:bg-indigo-50 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50 shadow-xl"
+            >
+              <Sparkles size={20} />
+              RE-ANALYZE DATA
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Top Products Analytics */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 pb-10">
+         {/* Top Products */}
+        <div className="bg-white p-5 md:p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+          <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
-              <div className="bg-amber-100 p-2 rounded-xl text-amber-600">
+              <div className="bg-amber-100 p-2.5 rounded-2xl text-amber-600 shadow-inner">
                 <Trophy size={20} />
               </div>
-              <h3 className="font-black text-lg text-slate-800">Produk Terlaris (Top Performers)</h3>
+              <h3 className="font-black text-lg text-slate-800 uppercase tracking-tight">Best Sellers</h3>
             </div>
-            <button className="text-xs font-bold text-indigo-600 hover:underline">Lihat Semua</button>
           </div>
           <div className="space-y-4">
             {TOP_PRODUCTS.map((prod, i) => (
-              <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl group hover:bg-white hover:shadow-md hover:border-indigo-100 border border-transparent transition-all">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-black text-slate-400 shadow-sm border border-slate-100">
-                    #{i + 1}
+              <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-indigo-100 hover:bg-white hover:shadow-lg transition-all active:scale-[0.98]">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-black text-slate-300 shadow-sm border border-slate-100 shrink-0">
+                    {i + 1}
                   </div>
-                  <div>
-                    <h5 className="font-bold text-slate-800">{prod.name}</h5>
-                    <p className="text-xs text-slate-400">{prod.sales} Terjual</p>
+                  <div className="truncate">
+                    <h5 className="font-black text-slate-800 text-sm truncate">{prod.name}</h5>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{prod.sales} Unit Terjual</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-black text-slate-900">Rp {prod.revenue.toLocaleString()}</p>
-                  <div className={`flex items-center justify-end text-[10px] font-bold ${prod.trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
+                <div className="text-right shrink-0">
+                  <p className="font-black text-slate-900 text-sm">Rp {prod.revenue.toLocaleString()}</p>
+                  <div className={`flex items-center justify-end text-[10px] font-black ${prod.trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
                     {prod.trend === 'up' ? <ArrowUpRight size={12} className="mr-0.5" /> : <ArrowDownRight size={12} className="mr-0.5" />}
-                    {prod.trend === 'up' ? 'Meningkat' : 'Menurun'}
+                    {prod.trend === 'up' ? 'TRENDING' : 'STABLE'}
                   </div>
                 </div>
               </div>
@@ -240,116 +237,50 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Member Segmentation & Loyalty */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="bg-violet-100 p-2 rounded-xl text-violet-600">
-              <Users size={20} />
-            </div>
-            <h3 className="font-black text-lg text-slate-800">Segmentasi Pelanggan</h3>
-          </div>
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={memberSegments}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={8}
-                  dataKey="value"
-                  animationBegin={200}
-                >
-                  {memberSegments.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
-                />
-                <Legend iconType="circle" wrapperStyle={{paddingTop: '20px', fontSize: '12px', fontWeight: 'bold'}} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="mt-4 p-4 bg-violet-50 rounded-2xl border border-violet-100">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-violet-700">Rata-rata Poin per Member</span>
-              <span className="text-sm font-black text-violet-900">850 Poin</span>
-            </div>
-            <div className="w-full bg-violet-200 h-2 rounded-full overflow-hidden">
-              <div className="bg-violet-600 h-full w-[70%]" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Inventory Health & Bottom Performers */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="bg-rose-100 p-2 rounded-xl text-rose-600">
+        {/* Inventory Summary (Mobile Friendly Table) */}
+        <div className="bg-white p-5 md:p-8 rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="bg-rose-100 p-2.5 rounded-2xl text-rose-600 shadow-inner">
               <AlertTriangle size={20} />
             </div>
-            <h3 className="font-black text-lg text-slate-800">Produk Kurang Laku (Perlu Perhatian)</h3>
+            <h3 className="font-black text-lg text-slate-800 uppercase tracking-tight">Perlu Perhatian</h3>
           </div>
-          <div className="overflow-hidden border border-slate-100 rounded-2xl">
-            <table className="w-full">
-              <thead className="bg-slate-50">
-                <tr className="text-left text-[10px] font-black uppercase text-slate-400 tracking-wider">
-                  <th className="p-4">Produk</th>
-                  <th className="p-4 text-center">Terjual (30hr)</th>
-                  <th className="p-4 text-center">Sisa Stok</th>
-                  <th className="p-4 text-right">Saran Aksi</th>
+          <div className="overflow-x-auto -mx-5 md:mx-0 px-5 md:px-0">
+            <table className="w-full min-w-[350px]">
+              <thead className="bg-slate-50/50">
+                <tr className="text-left text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                  <th className="p-4 rounded-l-2xl">Produk</th>
+                  <th className="p-4 text-center">Stok</th>
+                  <th className="p-4 text-right rounded-r-2xl">Rekomendasi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-50">
                 {BOTTOM_PRODUCTS.map((prod, i) => (
-                  <tr key={i} className="hover:bg-slate-50 transition-colors">
+                  <tr key={i} className="group hover:bg-slate-50/50 transition-colors">
                     <td className="p-4 font-bold text-slate-700 text-sm">{prod.name}</td>
-                    <td className="p-4 text-center text-sm font-medium">{prod.sales}</td>
-                    <td className="p-4 text-center text-sm font-medium">{prod.stock}</td>
+                    <td className="p-4 text-center">
+                      <span className={`text-sm font-black ${prod.stock < 15 ? 'text-rose-500' : 'text-slate-600'}`}>{prod.stock}</span>
+                    </td>
                     <td className="p-4 text-right">
-                      <span className="bg-amber-50 text-amber-600 text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-tight">Promosikan</span>
+                      <button className="bg-white border border-slate-200 text-indigo-600 text-[9px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest shadow-sm hover:shadow-md transition-all">PROMOSI</button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="bg-emerald-100 p-2 rounded-xl text-emerald-600">
-              <Package size={20} />
-            </div>
-            <h3 className="font-black text-lg text-slate-800">Efisiensi Stok Inventaris</h3>
-          </div>
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <p className="text-sm font-bold text-slate-700">Perputaran Stok (Inventory Turnover)</p>
-                <p className="text-xs text-slate-400">Rasio seberapa cepat stok terjual</p>
-              </div>
-              <p className="text-xl font-black text-emerald-600">4.2x</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total SKU</p>
-                <p className="text-lg font-black text-slate-900">{INITIAL_PRODUCTS.length}</p>
-              </div>
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Valuasi Stok</p>
-                <p className="text-lg font-black text-slate-900">Rp 42.5jt</p>
-              </div>
-            </div>
-            <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-2xl flex items-center gap-4">
-              <Calendar className="text-indigo-600 shrink-0" size={24} />
-              <p className="text-xs text-indigo-700 font-medium">
-                Siklus pengadaan barang rata-rata Anda adalah <span className="font-black">12 hari</span>. Ini sudah cukup optimal untuk kategori resto.
-              </p>
-            </div>
+          <div className="mt-8 p-6 bg-slate-900 rounded-3xl text-white relative overflow-hidden group active:scale-[0.98] transition-transform">
+             <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
+               <Package size={100} />
+             </div>
+             <div className="relative z-10">
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Total SKU Terdaftar</p>
+               <h4 className="text-4xl font-black mb-1">{INITIAL_PRODUCTS.length} <span className="text-lg text-slate-500">Items</span></h4>
+               <div className="flex items-center gap-2 text-emerald-400 text-xs font-black">
+                  <CheckCircle2 size={14} />
+                  LOGISTIK OPTIMAL
+               </div>
+             </div>
           </div>
         </div>
       </div>

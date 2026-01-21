@@ -5,10 +5,10 @@ import Layout from './components/Layout';
 import Dashboard from './views/Dashboard';
 import POS from './views/POS';
 import Members from './views/Members';
+import Inventory from './views/Inventory';
+import CashFlow from './views/CashFlow';
 
 // Placeholder views for basic structure
-const Inventory = () => <div className="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm"><h2 className="text-2xl font-bold mb-4">Manajemen Inventaris</h2><p className="text-slate-500">Fitur manajemen stok produk, kategori, dan riwayat mutasi barang.</p></div>;
-const CashFlow = () => <div className="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm"><h2 className="text-2xl font-bold mb-4">Alur Kas</h2><p className="text-slate-500">Mencatat uang masuk dan keluar toko di luar transaksi POS.</p></div>;
 const Payables = () => <div className="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm"><h2 className="text-2xl font-bold mb-4">Piutang Supplier</h2><p className="text-slate-500">Kelola kewajiban pembayaran kepada supplier dan jatuh tempo piutang.</p></div>;
 const Reports = () => <div className="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm"><h2 className="text-2xl font-bold mb-4">Laporan Keuangan</h2><p className="text-slate-500">Laporan laba rugi, penjualan harian, mingguan, dan bulanan.</p></div>;
 const Settings = () => <div className="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm"><h2 className="text-2xl font-bold mb-4">Pengaturan Toko</h2><p className="text-slate-500">Konfigurasi printer, pajak, profil toko, dan manajemen user.</p></div>;
