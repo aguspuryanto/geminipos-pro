@@ -1,0 +1,7 @@
+{
+  "name": "GeminiPOS Pro",
+  "description": "A comprehensive cloud-based Point of Sale system with retail and restaurant modes, inventory management, membership programs, and financial reporting.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
